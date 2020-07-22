@@ -51,6 +51,17 @@ class Lexer:
         while self.char != None:
             if self.current_char in '\t':
                 self.advance()
-            elif 
+            elif self.current_char == '+':
+                tokens.append(Token(TT_PLUS))
+                self.advance()
+            elif self.current_char == '-':
+                tokens.append(Token(TT_MINUS))
+                self.advance()
+            elif self.current_char == '*':
+                tokens.append(Token(TT_MUL))
+                self.advance()
+            elif self.current_char == '/':
+                tokens.append(Token(TT_DIV))
+                self.advance()
 
         return tokens
