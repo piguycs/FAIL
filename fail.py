@@ -11,7 +11,7 @@
 # Constants
 #######################################
 
-DIGITS = '0123456789'
+DIGITS = '1234567890'
 
 
 
@@ -30,12 +30,12 @@ class Error:
 
 class IllegalCharError(Error):
     def __init__(self, details):
-        super().__init__('Illegal Character', details)
+        super().__init__('Illegal Character, Character not defined', details)
 
 
 
 ##########################################
-#Tokens
+# Tokens
 ##########################################
 
 TT_INT      = 'INT'
@@ -59,7 +59,7 @@ class Token:
 
 
 ##########################################
-#Lexer
+# Lexer
 ##########################################
 
 class Lexer:
@@ -102,7 +102,7 @@ class Lexer:
             else:
                 char = self.current_char
                 self.advance()
-                return [], IllegalCharError("'"+ char +"'")
+                return [], IllegalCharError("["+ char +"]")
 
         return tokens, None
 
@@ -127,7 +127,7 @@ class Lexer:
 
 
 #######################################
-#RUN
+# RUN
 #######################################
 
 def run(text):
