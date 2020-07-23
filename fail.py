@@ -190,7 +190,7 @@ class Parser:
         self.tok_index = 1
         self.advance()
 
-    def advance(self):
+    def advance(self, ):
         self.tok_index += 1
         if self.tok_index < len(self.tokens):
             self.current_tok = self.tokens[self.tok_index]
@@ -205,7 +205,7 @@ class Parser:
     def factor(self):
         tok = self.current_tok
 
-        if tok.type in (TT_FLOAT, TT_INT):
+        if tok.type in (TT_INT, TT_FLOAT):
             self.advance()
             return NumberNode(tok) 
     
@@ -213,7 +213,7 @@ class Parser:
         return self.bin_op(self.factor, (TT_MUL, TT_DIV))
 
     def expr(self):
-        return self.bin_op(self.factor, (TT_PLUS, TT_MINUS))
+        return self.bin_op(self.term, (TT_PLUS, TT_MINUS))
     
     ####################################
 
@@ -244,4 +244,4 @@ def run(fname, text):
     parser = Parser(tokens)
     ast = parser.parse()
 
-    return ast, error
+    return ast, None
