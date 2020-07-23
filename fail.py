@@ -134,7 +134,7 @@ class Lexer:
                 pos_start = self.pos.copy()
                 char = self.current_char
                 self.advance()
-                return [], IllegalCharError(pos_start, self.pos, "\n["+ char +"] on ")
+                return [], IllegalCharError(pos_start, self.pos, "\n[" + char + "] on ")
 
         return tokens, None
 
@@ -238,7 +238,7 @@ def run(fname, text):
     #Generate tokens
     lexer = Lexer(fname, text)
     tokens, error = lexer.make_tokens()
-    
+    if Error: return None, error
 
     #Generate AST
     parser = Parser(tokens)
