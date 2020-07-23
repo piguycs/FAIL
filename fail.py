@@ -132,11 +132,7 @@ class Lexer:
                 pos_start = self.pos.copy()
                 char = self.current_char
                 self.advance()
-<<<<<<< HEAD
                 return [], IllegalCharError(pos_start, self.pos, "\n[" + char + "] on ")
-=======
-                return [], IllegalCharError(pos_start, self.pos, "["+ char +"]\n")
->>>>>>> parent of ca84b79... Minor tweak
 
         return tokens, None
 
