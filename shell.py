@@ -2,7 +2,7 @@ import fail
 
 while True:
     text = input('fail >> ')
-    result, error = fail.run(text)
+    result, error = fail.run('<stdin>', text)
 
     if error:
         print(error.as_string())
