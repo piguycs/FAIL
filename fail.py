@@ -238,7 +238,7 @@ def run(fname, text):
     #Generate tokens
     lexer = Lexer(fname, text)
     tokens, error = lexer.make_tokens()
-    if Error: return None, error
+    
 
     #Generate AST
     parser = Parser(tokens)
