@@ -1,10 +1,9 @@
-#  ________________  .___.____       
-#  \_   _____/  _  \ |   |    |      
-#   |    __)/  /_\  \|   |    |      
-#   |     \/    |    \   |    |___   
-#   \___  /\____|__  /___|_______ \  
-#       \/         \/            \/  
-
+#  ________________  .___.____
+#  \_   _____/  _  \ |   |    |
+#   |    __)/  /_\  \|   |    |
+#   |     \/    |    \   |    |___
+#   \___  /\____|__  /___|_______ \
+#       \/         \/            \/
 
 
 #######################################
@@ -12,7 +11,6 @@
 #######################################
 
 DIGITS = '1234567890'
-
 
 
 #######################################
@@ -25,16 +23,16 @@ class Error:
         self.pos_end = pos_end
         self.error_name = error_name
         self.details = details
-    
+
     def as_string(self):
-        result  = f'{self.error_name}: {self.details}'
+        result = f'{self.error_name}: {self.details}'
         result += f'File {self.pos_start.fname}, line {self.pos_start.line + 1}'
         return result
+
 
 class IllegalCharError(Error):
     def __init__(self, pos_start, pos_end, details):
         super().__init__(pos_start, pos_end, 'Illegal Character, character not defined', details)
-
 
 
 ##########################################
@@ -48,7 +46,7 @@ class Position:
         self.col = col
         self.fname = fname
         self.ftxt = ftxt
-    
+
     def advance(self, current_char):
         self.index += 1
         self.col += 1
@@ -56,26 +54,25 @@ class Position:
         if current_char == '\n':
             self.line += 1
             self.col = 0
-        
+
         return self
 
     def copy(self):
         return Position(self.index, self.line, self.col, self.fname, self.ftxt)
 
 
-
 ##########################################
 # Tokens
 ##########################################
+TT_INT = 'INT'
+TT_FLOAT = 'FLOAT'
+TT_PLUS = 'PLUS'
+TT_MINUS = 'MINUS'
+TT_MUL = 'MUL'
+TT_DIV = 'DIV'
+TT_LPAREN = 'LPAREN'
+TT_RPAREN = 'RPAREN'
 
-TT_INT      = 'INT'
-TT_FLOAT    = 'FLOAT'
-TT_PLUS     = 'PLUS'
-TT_MINUS    = 'MINUS'
-TT_MUL      = 'MUL'
-TT_DIV      = 'DIV'
-TT_LPAREN   = 'LPAREN'
-TT_RPAREN   = 'RPAREN'
 
 class Token:
     def __init__(self, type_, value=None):
@@ -83,9 +80,9 @@ class Token:
         self.value = value
 
     def __repr__(self):
-        if self.value: return f'{self.type}:{self.value}'
+        if self.value:
+            return f'{self.type}:{self.value}'
         return f'{self.type}'
-
 
 
 ##########################################
@@ -99,10 +96,11 @@ class Lexer:
         self.pos = Position(-1, 0, -1, fname, text)
         self.current_char = None
         self.advance()
-    
+
     def advance(self):
         self.pos.advance(self.current_char)
-        self.current_char = self.text[self.pos.index] if self.pos.index < len(self.text) else None
+        self.current_char = self.text[self.pos.index] if self.pos.index < len(
+            self.text) else None
 
     def make_tokens(self):
         tokens = []
@@ -144,7 +142,8 @@ class Lexer:
 
         while self.current_char != None and self.current_char in DIGITS + '.':
             if self.current_char == '.':
-                if dot_count == 1: break
+                if dot_count == 1:
+                    break
                 dot_count += 1
                 num_str += '.'
             else:
@@ -157,7 +156,6 @@ class Lexer:
             return Token(TT_FLOAT, float(num_str))
 
 
-
 #######################################
 # Nodes
 #######################################
@@ -165,9 +163,10 @@ class Lexer:
 class NumberNode:
     def __init__(self, tok):
         self.tok = tok
-    
+
     def __repr__(self):
         return f'{self.tok}'
+
 
 class BinOpNode:
     def __init__(self, left_node, op_tok, right_node):
@@ -177,7 +176,6 @@ class BinOpNode:
 
     def __repr__(self):
         return f'({self.left_node}, {self.op_tok}, {self.right_node})'
-
 
 
 #######################################
@@ -207,14 +205,14 @@ class Parser:
 
         if tok.type in (TT_INT, TT_FLOAT):
             self.advance()
-            return NumberNode(tok) 
-    
+            return NumberNode(tok)
+
     def term(self):
         return self.bin_op(self.factor, (TT_MUL, TT_DIV))
 
     def expr(self):
         return self.bin_op(self.term, (TT_PLUS, TT_MINUS))
-    
+
     ####################################
 
     def bin_op(self, function, ops):
@@ -229,7 +227,6 @@ class Parser:
         return left
 
 
-
 #######################################
 # RUN
 #######################################
@@ -238,7 +235,8 @@ def run(fname, text):
     #Generate tokens
     lexer = Lexer(fname, text)
     tokens, error = lexer.make_tokens()
-    if Error: return None, error
+    if Error:
+        return None, error
 
     #Generate AST
     parser = Parser(tokens)
